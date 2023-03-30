@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: laravel-crud-backend
+spec:
+  template:
+    metadata:
+      name: laravel-backend-pod
+    spec:
+      containers:
+      - name: laravel-crud-backend
+        image: mrfzy00/laravel-crud-backend
+        imagePullPolicy: Never
+      restartPolicy: Never
