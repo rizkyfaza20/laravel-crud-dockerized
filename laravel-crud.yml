@@ -1,14 +1,35 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: laravel-crud-backend
+  namespace: default
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      laravel-crud-backend: laravel-crud-backend
   template:
     metadata:
-      name: laravel-backend-pod
+      labels:
+        laravel-crud-backend: laravel-crud-backend
     spec:
       containers:
       - name: laravel-crud-backend
         image: mrfzy00/laravel-crud-backend
         imagePullPolicy: Never
-      restartPolicy: Never
+        ports:
+          - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel-crud-backend
+  namespace: laravel-crud-backend
+spec:
+  type: NodePort
+  selector:
+    laravel-crud-backend: web
+  ports:
+  - port: 8000
+    targetPort: 8000
+    nodePort: 30001

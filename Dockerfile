@@ -9,6 +9,14 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install the MySQL Server package
+ENV DB_HOST=db
+ENV DB_PORT=3306
+ENV DB_DATABASE=laravel
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=root
+RUN apt-get update && apt-get install -y default-mysql-server
+
 # Install required PHP extensions
 RUN docker-php-ext-install pdo_mysql
 
@@ -30,7 +38,7 @@ ENV DB_HOST=db
 ENV DB_PORT=3306
 ENV DB_DATABASE=laravel
 ENV DB_USERNAME=root
-ENV DB_PASSWORD=
+ENV DB_PASSWORD=root
 
 # Expose the default Laravel port
 EXPOSE 8000
