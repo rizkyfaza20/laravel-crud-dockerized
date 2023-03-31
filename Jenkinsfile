@@ -8,6 +8,7 @@ pipeline {
         KUBERNETES_NAMESPACE = "laravel-crud-backend"
         KUBERNETES_DEPLOYMENT_NAME = "laravel-crud-deployment"
         KUBERNETES_CONTAINER_NAME = "laravel-crud-backend"
+        DOCKERHUB_CREDENTIALS = credentials('9761b7f3-55ac-4c3e-adeb-d35d9b44dcc0')
     }
 
     stages {
@@ -26,12 +27,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
-                    sh '''
-                        docker login \
-                        --username ${DOCKER_HUB_USERNAME} \
-                        --password ${DOCKER_HUB_PASSWORD}
-                    '''
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                     sh '''
                         docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}
                     '''
