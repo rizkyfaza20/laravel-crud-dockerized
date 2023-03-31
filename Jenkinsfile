@@ -33,7 +33,6 @@ pipeline {
                     '''
                 }
             }
-        }
         stage('Deploy to Kubernetes on Localhost') {
             steps {
                 script {
